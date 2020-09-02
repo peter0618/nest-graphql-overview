@@ -1,9 +1,10 @@
 import { Query, Resolver } from '@nestjs/graphql';
+import {User} from "../../autogen/schema.graphql";
 
 @Resolver('User')
 export class UserResolver {
   @Query()
-  async getAll() {
+  async getAll(): Promise<User[]> {
     return [
       {
         id: '1',
