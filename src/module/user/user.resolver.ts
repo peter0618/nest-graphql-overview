@@ -1,21 +1,28 @@
-import { Query, Resolver } from '@nestjs/graphql';
-import {User} from "../../autogen/schema.graphql";
+import {Args, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
+import { User } from '../../autogen/schema.graphql';
+import { UserService } from './user.service';
+import { PostService } from '../post/post.service';
 
 @Resolver('User')
 export class UserResolver {
-  @Query()
+  constructor(private readonly userService: UserService, private readonly postService: PostService) {}
+
+  @Query('users')
   async getAll(): Promise<User[]> {
-    return [
-      {
-        id: '1',
-        name: 'Peter',
-        age: 36,
-      },
-      {
-        id: '2',
-        name: 'Grace',
-        age: 34,
-      },
-    ];
+    console.log(`getAll()`);
+    return await this.userService.findAll();
+  }
+
+  @Query('getUserById')
+  async getById(@Args('id') id: number) {
+    console.log(`getById(id: ${id})`);
+    return await this.userService.findOneById(id);
+  }
+
+  @ResolveField()
+  async posts(@Parent() user: User) {
+    console.log(`posts(user: ${JSON.stringify(user)})`);
+    const { id } = user;
+    return await this.postService.findAllByUserId(id);
   }
 }
