@@ -13,8 +13,8 @@ export class UserResolver {
     return await this.userService.findAll();
   }
 
-  @Query('getUserById')
-  async getById(@Args('id') id: number) {
+  @Query('userById')
+  async getById(@Args('id') id: number): Promise<User> {
     console.log(`getById(id: ${id})`);
     return await this.userService.findOneById(id);
   }

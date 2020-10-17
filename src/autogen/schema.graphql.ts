@@ -6,6 +6,11 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum Role {
+    ADMIN = "ADMIN",
+    USER = "USER"
+}
+
 export class Post {
     id: number;
     userId: number;
@@ -16,12 +21,14 @@ export class Post {
 export abstract class IQuery {
     abstract users(): User[] | Promise<User[]>;
 
-    abstract getUserById(id: number): User | Promise<User>;
+    abstract userById(id: number): User | Promise<User>;
 }
 
 export class User {
     id: number;
+    mobilePhone: string;
     name: string;
-    age: number;
+    email: string;
+    role: Role;
     posts?: Post[];
 }
